@@ -2,12 +2,20 @@ import { useState, useEffect } from 'react';
 
 type FormProps = {
   cancelProp: () => void
+  submitProp: (formData: FormData) => void
 };
 
-export default function Form({ cancelProp } : FormProps) {
+type FormData = {
+  serviceName: string,
+  login: string,
+  password: string,
+  url: string,
+};
+
+export default function Form({ cancelProp, submitProp } : FormProps) {
   const [formValid, setFormValid] = useState(false);
 
-  const [formInfo, setFormInfo] = useState(
+  const [formInfo, setFormInfo] = useState<FormData>(
     {
       serviceName: '',
       login: '',
@@ -69,7 +77,11 @@ export default function Form({ cancelProp } : FormProps) {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (validateForm()) {
+      submitProp(formInfo);
+    }
     resetForm();
+    cancelProp();
   }
 
   const { passwordMinLength,
