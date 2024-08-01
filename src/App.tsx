@@ -12,10 +12,15 @@ type FormData = {
 
 function App() {
   const [formVisible, setFormVisible] = useState(false);
+  const [showPassword, setShowPassword] = useState(true);
   const [formData, setFormData] = useState<FormData[]>([]);
 
   const handleClick = () => {
     setFormVisible((visible) => !visible);
+  };
+
+  const handleCheckBox = () => {
+    setShowPassword((show) => !show);
   };
 
   const handleFormData = (newFormData: FormData) => {
@@ -29,6 +34,10 @@ function App() {
   return (
     <>
       <h1>Gerenciador de senhas</h1>
+      <label>
+        Esconder senhas
+        <input type="checkbox" onChange={ handleCheckBox } />
+      </label>
       {
         formVisible
           ? <Form cancelProp={ handleClick } submitProp={ handleFormData } />
@@ -50,6 +59,7 @@ function App() {
               password={ form.password }
               url={ form.url }
               onRemove={ () => handleRemoveFormData(index) }
+              showPassword={ showPassword }
             />
           )))
       }

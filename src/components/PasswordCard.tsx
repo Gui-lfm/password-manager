@@ -1,15 +1,16 @@
 import React from 'react';
 
-type FormData = {
+type CardData = {
   serviceName: string,
   login: string,
   password: string,
   url: string,
-  onRemove: () => void
+  onRemove: () => void,
+  showPassword: boolean
 };
 
 export default function PasswordCard(
-  { serviceName, login, password, url, onRemove }: FormData,
+  { serviceName, login, password, url, onRemove, showPassword }: CardData,
 ) {
   return (
     <div>
@@ -24,9 +25,14 @@ export default function PasswordCard(
       </label>
       <label>
         senha
-        <p>{password}</p>
+        <p>{showPassword ? password : '************'}</p>
       </label>
-      <button data-testid="remove-btn" onClick={ onRemove }>Apagar informações</button>
+      <button
+        data-testid="remove-btn"
+        onClick={ onRemove }
+      >
+        Apagar informações
+      </button>
     </div>
   );
 }
