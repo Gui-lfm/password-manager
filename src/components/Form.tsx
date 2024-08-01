@@ -18,18 +18,29 @@ export default function Form({ cancelProp } : FormProps) {
 
   const validatePassword = () => {
     // verifica se a senha possui entre 8 a 16 caracteres
-    const passwordLength = formInfo.password.length >= 8
-    && formInfo.password.length <= 16;
+    const passwordMinLength = formInfo.password.length >= 8;
+    const passwordMaxLength = formInfo.password.length <= 16;
     // reg exp que verifica se a senha possui letras e números
     const hasLettersAndNumbers = /^(?=.*[a-zA-Z])(?=.*\d)/.test(formInfo.password);
     // reg exp que verifica se a senha possui um caractere especial
     const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>]/.test(formInfo.password);
     // retorna true se as três condições acima são verdadeiras ou false se pelo menos uma não for verdadeira
-    return passwordLength && hasLettersAndNumbers && hasSpecialCharacter;
+    return {
+      passwordMinLength,
+      passwordMaxLength,
+      hasLettersAndNumbers,
+      hasSpecialCharacter,
+      valid: passwordMinLength
+      && passwordMaxLength
+      && hasLettersAndNumbers
+      && hasSpecialCharacter,
+    };
   };
 
-  const validateForm = ():boolean => {
-    return formInfo.serviceName !== '' && formInfo.login !== '' && validatePassword();
+  const validateForm = (): boolean => {
+    return formInfo.serviceName !== ''
+    && formInfo.login !== ''
+    && validatePassword().valid;
   };
 
   useEffect(() => {
@@ -56,10 +67,20 @@ export default function Form({ cancelProp } : FormProps) {
     });
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     resetForm();
   }
+
+  const { passwordMinLength,
+    passwordMaxLength,
+    hasLettersAndNumbers,
+    hasSpecialCharacter,
+  } = validatePassword();
+
+  const verifyClassName = (verification : boolean) => {
+    return verification ? 'valid-password-check' : 'invalid-password-check';
+  };
 
   return (
     <form onSubmit={ handleSubmit }>
@@ -95,6 +116,21 @@ export default function Form({ cancelProp } : FormProps) {
           onChange={ handleChange }
         />
       </label>
+
+      <ul>
+        <li className={ verifyClassName(passwordMinLength) }>
+          Possuir 8 ou mais caracteres
+        </li>
+        <li className={ verifyClassName(passwordMaxLength) }>
+          Possuir até 16 caracteres
+        </li>
+        <li className={ verifyClassName(hasLettersAndNumbers) }>
+          Possuir letras e números
+        </li>
+        <li className={ verifyClassName(hasSpecialCharacter) }>
+          Possuir algum caractere especial
+        </li>
+      </ul>
 
       <label>
         URL
