@@ -22,6 +22,10 @@ function App() {
     setFormData([...formData, newFormData]);
   };
 
+  const handleRemoveFormData = (index: number) => {
+    setFormData(formData.filter((_, i) => i !== index));
+  };
+
   return (
     <>
       <h1>Gerenciador de senhas</h1>
@@ -45,6 +49,7 @@ function App() {
               login={ form.login }
               password={ form.password }
               url={ form.url }
+              onRemove={ () => handleRemoveFormData(index) }
             />
           )))
       }

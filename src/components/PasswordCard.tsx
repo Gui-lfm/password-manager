@@ -5,9 +5,12 @@ type FormData = {
   login: string,
   password: string,
   url: string,
+  onRemove: () => void
 };
 
-export default function PasswordCard({ serviceName, login, password, url }: FormData) {
+export default function PasswordCard(
+  { serviceName, login, password, url, onRemove }: FormData,
+) {
   return (
     <div>
       <a href={ url }>
@@ -23,6 +26,7 @@ export default function PasswordCard({ serviceName, login, password, url }: Form
         senha
         <p>{password}</p>
       </label>
+      <button data-testid="remove-btn" onClick={ onRemove }>Apagar informações</button>
     </div>
   );
 }
