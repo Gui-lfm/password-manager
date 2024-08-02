@@ -14,7 +14,7 @@ type FormData = {
 
 export default function Form({ cancelProp, submitProp } : FormProps) {
   const [formValid, setFormValid] = useState(false);
-
+  const [inputType, setInputType] = useState('password');
   const [formInfo, setFormInfo] = useState<FormData>(
     {
       serviceName: '',
@@ -43,6 +43,10 @@ export default function Form({ cancelProp, submitProp } : FormProps) {
       && hasLettersAndNumbers
       && hasSpecialCharacter,
     };
+  };
+
+  const toogleVisibility = () => {
+    setInputType(inputType === 'password' ? 'text' : 'password');
   };
 
   const validateForm = (): boolean => {
@@ -124,9 +128,16 @@ export default function Form({ cancelProp, submitProp } : FormProps) {
           name="password"
           value={ formInfo.password }
           required
-          type="password"
+          type={ inputType }
           onChange={ handleChange }
         />
+        <button
+          type="button"
+          onClick={ toogleVisibility }
+          data-testid="show-hide-form-password"
+        >
+          {inputType === 'password' ? 'mostrar senha' : 'esconder senha'}
+        </button>
       </label>
 
       <ul>
