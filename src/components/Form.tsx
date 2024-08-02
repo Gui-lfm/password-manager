@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 type FormProps = {
   cancelProp: () => void
@@ -85,6 +86,11 @@ export default function Form({ cancelProp, submitProp } : FormProps) {
       submitProp(formInfo);
     }
     resetForm();
+    Swal.fire({
+      title: 'Serviço cadastrado com sucesso',
+      timer: 1500,
+      timerProgressBar: true,
+    });
     cancelProp();
   }
 
